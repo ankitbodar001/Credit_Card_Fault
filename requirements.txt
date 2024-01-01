@@ -3,7 +3,7 @@ numpy
 seaborn
 flask
 scikit-learn
-yaml
+PyYAML
 boto3
 xgboost
 -e .

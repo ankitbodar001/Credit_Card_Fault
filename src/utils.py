@@ -6,6 +6,7 @@ import pandas as pd
 from sklearn.metrics import accuracy_score
 from src.exception import CustomException
 from src.logger import logging
+import yaml
 
 
 def save_object(file_path, obj):
@@ -51,3 +52,11 @@ def load_object(file_path):
     except Exception as e:
         logging.info('Exception Occured in load_object function utils')
         raise CustomException(e,sys)
+    
+def read_yaml_file(self, filename: str) -> dict:
+        try:
+            with open(filename, "rb") as yaml_file:
+                return yaml.safe_load(yaml_file)
+
+        except Exception as e:
+            raise CustomException(e, sys) from e

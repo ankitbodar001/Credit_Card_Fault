@@ -11,6 +11,7 @@ from sklearn.model_selection import GridSearchCV, train_test_split
 from src.constant import *
 from src.utils import save_object
 from src.utils import evaluate_model
+from src.utils import read_yaml_file
 from src.exception import CustomException
 from src.logger import logging
 
