@@ -2,11 +2,12 @@ import shutil
 import os,sys
 import pandas as pd
 from src.logger import logging
-from src.constant import *
-from src.exception import CustomException
-from flask import request
-from src import utils
 
+from src.exception import CustomException
+import sys
+from flask import request
+from src.constant import *
+from src.utils.main_utils import MainUtils
 from dataclasses import dataclass
         
         
@@ -14,16 +15,17 @@ from dataclasses import dataclass
 class PredictionPipelineConfig:
     prediction_output_dirname: str = "predictions"
     prediction_file_name:str =  "predicted_file.csv"
-    trained_model_file_path: str = os.path.join('artifacts','model.pkl')
-    preprocessor_path: str = os.path.join('artifacts','preprocessor.pkl')
+    trained_model_file_path: str = os.path.join('artifacts',"model.pkl")
+    preprocessor_path: str = os.path.join('artifacts',"preprocessor.pkl")
     prediction_file_path:str = os.path.join(prediction_output_dirname,prediction_file_name)
+
 
 
 class PredictionPipeline:
     def __init__(self, request: request):
 
         self.request = request
-        #self.utils = MainUtils()
+        self.utils = MainUtils()
         self.prediction_pipeline_config = PredictionPipelineConfig()
 
 
@@ -36,17 +38,23 @@ class PredictionPipeline:
             
             Output      :   input dataframe
             On Failure  :   Write an exception log and then raise an exception
+            
+            Version     :   1.2
+            Revisions   :   moved setup to cloud
         """
 
         try:
             pred_file_input_dir = "prediction_artifacts"
             os.makedirs(pred_file_input_dir, exist_ok=True)
+
             input_csv_file = self.request.files['file']
             pred_file_path = os.path.join(pred_file_input_dir, input_csv_file.filename)
+            
+            
             input_csv_file.save(pred_file_path)
 
+
             return pred_file_path
-        
         except Exception as e:
             raise CustomException(e,sys)
 
@@ -78,6 +86,9 @@ class PredictionPipeline:
             
             Output      :   predicted dataframe
             On Failure  :   Write an exception log and then raise an exception
+            
+            Version     :   1.2
+            Revisions   :   moved setup to cloud
         """
    
         try:
@@ -94,7 +105,7 @@ class PredictionPipeline:
             
             os.makedirs( self.prediction_pipeline_config.prediction_output_dirname, exist_ok= True)
             input_dataframe.to_csv(self.prediction_pipeline_config.prediction_file_path, index= False)
-            logging.info("predictions completed.")
+            logging.info("predictions completed. ")
 
 
 
@@ -112,4 +123,11 @@ class PredictionPipeline:
 
 
         except Exception as e:
-            raise CustomException(e,sys)       
+            raise CustomException(e,sys)
+            
+        
+
+ 
+        
+
+        

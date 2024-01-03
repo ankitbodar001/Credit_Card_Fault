@@ -3,8 +3,8 @@ from src.exception import CustomException
 from src.logger import logging as lg
 import os,sys
 
-from src.pipelines.training_pipeline import TraininingPipeline
-from src.pipelines.prediction_pipeline import PredictionPipeline
+from src.pipeline.train_pipeline import TraininingPipeline
+from src.pipeline.predict_pipeline import PredictionPipeline
 
 app = Flask(__name__)
 
@@ -29,6 +29,7 @@ def upload():
     
     try:
 
+
         if request.method == 'POST':
             prediction_pipeline = PredictionPipeline(request)
             prediction_file_detail = prediction_pipeline.run_pipeline()
@@ -47,4 +48,4 @@ def upload():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug= True)
+    app.run(host="0.0.0.0", port=2000, debug= True)

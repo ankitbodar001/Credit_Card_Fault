@@ -6,6 +6,10 @@ from src.components.model_trainer import ModelTrainer
 from src.exception import CustomException
 
 
+
+
+
+
 class TraininingPipeline:
 
     
